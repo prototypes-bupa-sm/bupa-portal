@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+  <title>Bupa health portal – prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <div class="wrap top-row">
+      <a class="logo" href="#/home" aria-label="Bupa home"><img src="logo.svg" alt="" width="50" height="50"></a>
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span data-ic="menu"></span> Menu</button>
+      <div class="top-actions">
+        <div class="acct">
+          <button id="notifBtn" class="acct-btn toplink" aria-expanded="false" aria-controls="notifMenu"><span data-ic="bell"></span> <span class="hide-sm">Notifications</span> <span data-ic="chev"></span></button>
+          <div id="notifMenu" class="acct-menu notif-menu" hidden></div>
+        </div>
+        <a href="#/help" class="toplink"><span data-ic="headset"></span> <span class="hide-sm">Help and support</span></a>
+        <div class="acct">
+          <button id="acctBtn" class="acct-btn" aria-expanded="false" aria-controls="acctMenu" aria-haspopup="true"><span class="avatar">JS</span><b>309 <span class="hide-sm">points</span></b> <span data-ic="chev"></span></button>
+          <div id="acctMenu" class="acct-menu" hidden></div>
+        </div>
+      </div>
+    </div>
+    <nav id="nav" class="nav" aria-label="Main"><div class="wrap nav-row" id="navRow"></div></nav>
+  </header>
+  <main id="main" class="wrap"></main>
+
+  <div class="proto" role="group" aria-label="Prototype scenario">
+    <span class="proto-label">Prototype scenario</span>
+    <div class="seg" aria-label="Membership">
+      <button data-c="both">Member · Hospital and extras</button>
+      <button data-c="none">Non-member</button>
+    </div>
+    <div class="seg" aria-label="Content">
+      <button data-d="full">With appointments and documents</button>
+      <button data-d="empty">No appointments or documents</button>
+    </div>
+  </div>
+  <button id="chatFab" class="chat-fab" data-act="chat" aria-label="Chat with the Bupa assistant" aria-expanded="false" aria-controls="chatPanel"><span data-ic="chat"></span><span>Chat</span></button>
+  <section id="chatPanel" class="chat" role="dialog" aria-label="Bupa assistant chat" hidden>
+    <div class="chat-head"><div><b>Bupa assistant</b><small>AI assistant · prototype</small></div><button class="link" data-act="chat-close" aria-label="Close chat" data-ic="x"></button></div>
+    <div id="chatLog" class="chat-log" role="log" aria-live="polite"></div>
+    <div id="chatChips" class="chat-chips"></div>
+    <form id="chatForm" class="chat-form"><input id="chatInput" aria-label="Type your message" placeholder="Ask a question or request" autocomplete="off"><button class="btn p" type="submit">Send</button></form>
+  </section>
+  <div id="modal" class="modal" hidden></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>
