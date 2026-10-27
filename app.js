@@ -284,7 +284,7 @@
     `</div><aside>` +
     (M()
       ? `<h2>Make the most of your cover</h2><div class="card tint"><div class="row">${svg('shield')}<h3>Get more back at a Members First provider</h3></div>${ph(1)}${line('check')}${line('check')}<label class="field">Speciality, practice or practitioner<input placeholder="Dental, Bupa Dental or…"></label><label class="field">Location<input placeholder="Suburb or Postcode"></label>${btn('Search', 'toast:Search opens Members First finder', 'p')}</div>` + ''
-      : `<h2>Save with cover</h2>${cta('Unlock more services with Bupa health insurance', 'Compare cover', 'go:cover')}`) +
+      : `<h2>Save with cover</h2>${cta('Unlock more value with Bupa health insurance', 'Compare cover', 'go:cover')}`) +
     `</aside></div>` +
     sec('Tests and screenings', grid('g4', [['Genomics', 'dna'], ['Nurse-led health checks', 'steth'], ['Hearing test', 'ear'], ['Adult carrier screening test', 'dna']].map(([t, i]) => `<div class="card tiles">${icon(i)}<h3>${t}</h3>${ph(2)}${pill('Bupa members only', 'b push', 'lock')}</div>`))) +
     sec('Ongoing care', grid('g3', [['Hospital at home', 'briefcase'], ['Oncology and cancer', 'ribbon'], ['Aged care', 'users']].map(([t, i]) => tile(t, i)))) +
