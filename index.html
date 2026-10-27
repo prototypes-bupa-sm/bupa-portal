@@ -58,6 +58,37 @@
   <div id="modal" class="modal" hidden></div>
   <div id="live" class="sr" role="status" aria-live="polite"></div>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <script src="app.js"></script>
+  <div id="gate" class="gate" hidden>
+    <form id="gateForm" class="gate-card" autocomplete="off">
+      <img src="logo.svg" alt="Bupa" width="50" height="50">
+      <h1>Enter password</h1>
+      <label for="gatePw">Password</label>
+      <input id="gatePw" type="password" autofocus required>
+      <p id="gateErr" class="gate-err" role="alert" hidden>Incorrect password. Try again.</p>
+      <button class="btn p" type="submit">Continue</button>
+    </form>
+  </div>
+  <script>
+    (function () {
+      var K = 'bupa-unlocked', gate = document.getElementById('gate');
+      function start() {
+        document.body.classList.remove('locked'); gate.hidden = true;
+        var s = document.createElement('script'); s.src = 'app.js'; document.body.appendChild(s);
+      }
+      var ok = false; try { ok = sessionStorage.getItem(K) === '1'; } catch (e) {}
+      if (ok) return start();
+      document.body.classList.add('locked'); gate.hidden = false;
+      document.getElementById('gateForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (document.getElementById('gatePw').value === 'bupa') {
+          try { sessionStorage.setItem(K, '1'); } catch (x) {}
+          start();
+        } else {
+          document.getElementById('gateErr').hidden = false;
+          document.getElementById('gatePw').select();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

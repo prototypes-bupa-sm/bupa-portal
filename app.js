@@ -103,6 +103,7 @@
   function todoCard(skel) {
     const all = todoItems();
     const bar = w => `<div class="ph s" aria-hidden="true" style="width:${w}px;margin:0"></div>`;
+    if (skel) return `<div class="card todo-list" id="todoCard">${[['tooth', 'Complete your 6-monthly dental check'], ['eye', 'Complete your annual eye health check']].map(([ic, t]) => `<div class="todo-row"><span class="icon" aria-hidden="true">${svg(ic)}</span><div class="todo-t"><div class="row"><b>${t}</b>${pill('Recommended', 'b', 'star')}</div><div class="ha-src">${bar(160)}</div></div>${lnk('Book', 'book')}</div>`).join('')}</div>`;
     return `<div class="card todo-list" id="todoCard">${all.slice(0, 3).map(([n, src, p, t, st, cta, act]) => `<div class="todo-row"><span class="icon" aria-hidden="true">${svg(HA_TYPES.find(x => x[0] === t)[1])}</span><div class="todo-t"><div class="row">${skel ? bar(200) : `<b>${n}</b>`}${st === 2 ? pill('Due now', 'a', 'alert') : pill('Due soon', 'b', 'clock')}</div><div class="ha-src">${skel ? bar(160) : src}</div></div>${skel ? bar(70) : lnk(cta, act)}</div>`).join('')}</div>`;
   }
 
