@@ -30,6 +30,12 @@
     <nav id="nav" class="nav" aria-label="Main"><div class="wrap nav-row" id="navRow"></div></nav>
   </header>
   <main id="main" class="wrap"></main>
+  <footer class="foot">
+    <div class="wrap foot-lite">
+      <span>© Bupa Australia Pty Ltd · ABN 00 000 000 000</span>
+      <nav class="foot-links" aria-label="Legal"><button class="link" data-act="toast:Terms and conditions are not in this prototype">Terms and conditions</button><button class="link" data-act="toast:Privacy policy is not in this prototype">Privacy policy</button></nav>
+    </div>
+  </footer>
 
   <div class="proto" role="group" aria-label="Prototype scenario">
     <span class="proto-label">Prototype scenario</span>
@@ -42,7 +48,7 @@
       <button data-d="empty">No appointments or documents</button>
     </div>
   </div>
-  <button id="chatFab" class="chat-fab" data-act="chat" aria-label="Chat with the Bupa assistant" aria-expanded="false" aria-controls="chatPanel"><span data-ic="chat"></span><span>Chat</span></button>
+  <button id="chatFab" class="chat-fab" data-act="chat" aria-label="Chat with the Bupa assistant" aria-expanded="false" aria-controls="chatPanel"><span data-ic="ai-chat"></span><span>Chat</span></button>
   <section id="chatPanel" class="chat" role="dialog" aria-label="Bupa assistant chat" hidden>
     <div class="chat-head"><div><b>Bupa assistant</b><small>AI assistant · prototype</small></div><button class="link" data-act="chat-close" aria-label="Close chat" data-ic="x"></button></div>
     <div id="chatLog" class="chat-log" role="log" aria-live="polite"></div>
@@ -50,6 +56,7 @@
     <form id="chatForm" class="chat-form"><input id="chatInput" aria-label="Type your message" placeholder="Ask a question or request" autocomplete="off"><button class="btn p" type="submit">Send</button></form>
   </section>
   <div id="modal" class="modal" hidden></div>
+  <div id="live" class="sr" role="status" aria-live="polite"></div>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   <script src="app.js"></script>
 </body>
