@@ -298,7 +298,7 @@
     ['Family and pregnancy', 4, 'users', 0, 0], ['Health coaching', 5, 'steth', 0, 0]
   ];
   const progState = { on: new Set(), loc: new Set(), open: null };
-  const progCard = ([t, c, ic, clinic, cov]) => `<div class="card">${icon(ic)}<h3>${t}</h3>${ph(2)}${M() ? `<div class="row">${cov ? pill('Covered by your policy', 'g', 'check') : pill('Not covered', 'a')}</div>` : ''}${M() ? btn('Join program', 'join:' + t, 'push') : ''}</div>`;
+  const progCard = ([t, c, ic, clinic, cov]) => `<div class="card">${icon(ic)}<h3>${t}</h3>${ph(2)}${!M() ? `<ul class="prog-note"><li>${svg('shield')}For Bupa health insurance members</li></ul>` : ''}${M() ? `<div class="row">${cov ? pill('Covered by your policy', 'g', 'check') : pill('Not covered', 'a')}</div>` : ''}${M() ? btn('Join program', 'join:' + t, 'push') : ''}</div>`;
   const progList = () => {
     const list = PROGS.filter(p => (!progState.on.size || progState.on.has(p[1])) && (!progState.loc.size || progState.loc.has(p[3]))).sort((x, y) => y[4] - x[4]);
     return list.length ? grid('g3', list.map(progCard)) : empty('search', 'No programs match your filters', 'Clear filters', 'prog-clear');
@@ -310,18 +310,17 @@
       (open ? `<div class="card-menu dd-menu" id="dd-${key}" role="group" aria-label="${label}">${opts.map(([v, oi, t]) => `<button aria-pressed="${set.has(v)}" data-act="${act}:${v}">${svg(oi)}<span>${t}</span>${set.has(v) ? svg('check', 'dd-check') : ''}</button>`).join('')}</div>` : '') + `</div>`;
   };
   const progChips = () => `<div class="chips nowrap" role="group" aria-label="Filter programs">${dd('loc', 'home', 'Location', LOC, progState.loc, 'loc')}</div>`;
-  pages.programs = () => `<div class="pagehead"><div class="row"><h1>Programs</h1>${M() ? '' : pill('For Bupa health insurance members only', 'b', 'shield')}</div></div>` +
+  pages.programs = () => `<div class="pagehead"><div class="row"><h1>Programs</h1></div></div>` +
     `<div class="split"><div><section><div class="sechead"><h2>Health programs</h2></div><div id="progList" class="prog-list">${progList()}</div></section></div>` +
-    `<aside><h2>Your programs</h2>${M() ? `<div class="card"><div class="row between"><h3>Back pain program</h3>${pill('Week 2 of 8', 'b')}</div><div class="bar"><i style="width:25%"></i></div>${ph(2)}${btn('Continue', 'toast:Continue program', 'p')}</div>` : `<div class="card promo">${icon('shield')}<h3>Join Bupa</h3><p style="margin:0">Health programs are only available to Bupa health insurance members.</p>${btn('Compare cover', 'go:cover', 'w')}</div>`}</aside></div>`;
+    `<aside><h2>Your programs</h2><div class="card"><div class="row between"><h3>Back pain program</h3>${pill('Week 2 of 8', 'b')}</div><div class="bar"><i style="width:25%"></i></div>${ph(2)}${btn('Continue', 'toast:Continue program', 'p')}</div>${M() ? '' : `<div class="gap"></div><div class="card promo">${icon('shield')}<h3>Join Bupa</h3><p style="margin:0">Health programs are only available to Bupa health insurance members.</p>${btn('Compare cover', 'go:cover', 'w')}</div>`}</aside></div>`;
   const refreshProgs = () => { const l = $('#progList'); if (!l) return; keepFocus(() => { l.innerHTML = progList(); }); const n = l.querySelectorAll('.card').length; announce('p' + n, plural(n, 'program')); };
 
   pages.rewards = () => head('Rewards') +
     grid('g2', [`<div class="card fill"><div class="row">${svg('star')}<b>Points balance</b></div><h2 style="margin:0">309 points</h2></div>`, `<div class="card fill"><div class="row">${svg('award')}<b>Tier level</b></div><h2 style="margin:0">Level 1</h2></div>`]) +
     `<div style="height:32px"></div>` +
     sec('Earn points', grid('g4', [['Complete your health profile', 50], ['Complete a health check', 100], ['Refer a friend', 500], ['Book a dental check up', 75]].map(([t, n]) => `<div class="card">${icon('clipboard')}<b>${t}</b>${ph(2)}<b class="pts">${n} points</b><div class=\"push\">${lnk('Get started', 'toast:Prototype only')}</div></div>`))) +
-    sec('Featured challenges', grid('g4', ['Healthy Cities walking challenge', 'Festive Fitness', 'Spring into action', 'Power Hour'].map(t => `<div class="card">${icon('trophy')}<b>${t}</b>${ph(2)}<div class=\"push\">${lnk('Join challenge', 'toast:Prototype only')}</div></div>`))) +
+    sec('Featured challenges', grid('g4', ['Healthy Cities walking challenge', 'Festive Fitness', 'Spring into action', 'Power Hour'].map(t => `<div class="card rel">${icon('trophy')}<b>${t}</b>${ph(2)}<span class="pill pu corner">${svg('phone')}Join in the app</span><div class=\"push\">${lnk('Join challenge', 'toast:Prototype only')}</div></div>`))) +
     sec('Spend points', grid('g4', ['Gift cards', 'Vouchers', 'Health insurance discounts', 'Health service discounts'].map(t => `<div class="card">${icon('gift')}<b>${t}</b>${ph(2)}<div class=\"push\">${lnk('Redeem', 'toast:Prototype only')}</div></div>`))) +
-    appBanner() +
     sec('How points work', grid('g2', [`<div class="card tint"><div class="row">${svg('star')}<b>Earning points</b></div>${ph(2)}</div>`, `<div class="card tint"><div class="row">${svg('award')}<b>Using points</b></div>${ph(2)}</div>`])) +
     sec('Previous activity', `<div class="card center" style="align-items:center">${svg('clock')}<b>No activity to show</b><div class="ph" style="width:40%"></div></div>`);
 
