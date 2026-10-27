@@ -37,6 +37,7 @@
     heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.3l8.8-8.9a5.5 5.5 0 0 0 0-7.8z"/>',
     activity: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
     steth: '<path d="M5 3H4a1 1 0 0 0-1 1v5a5 5 0 0 0 10 0V4a1 1 0 0 0-1-1h-1"/><path d="M8 14v1a5 5 0 0 0 10 0v-2"/><circle cx="18" cy="11" r="2"/>',
+    share: '<path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/>',
     phone: '<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/>',
     pill: '<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7z"/><path d="m8.5 8.5 7 7"/>',
     dna: '<path d="M7 3c0 6 10 6 10 12v6M17 3c0 6-10 6-10 12v6"/><path d="M8 7h8M8 17h8M9.5 12h5"/>',
@@ -245,8 +246,8 @@
   pages.cover = () => M()
     ? coverMember()
     : head('Cover') +
-      `<div class="card promo hero" style="padding:36px"><h1 style="color:#fff">Get more value with Bupa health insurance</h1>${ph(2)}<div class="row">${btn('Get a quote', 'quote', 'w')}${btn('Compare cover', 'quote', 'w')}</div></div><div style="height:36px"></div>` +
-      sec('Saved quotes', grid('g3', [['Hospital cover', 'cross', 'Gold Hospital', '$189.50', '14 Oct 2026'], ['Extras cover', 'tooth', 'Top Extras', '$74.20', '9 Oct 2026'], ['Hospital and extras', 'heart', 'Gold Hospital + Top Extras', '$263.70', '2 Oct 2026']].map(([t, i, n, c, d]) => `<div class="card">${icon(i)}<h3>${t}</h3><div><b>${n}</b></div><div><span class="big-num" style="font-size:28px">${c}</span> <small>per month</small></div><div class="ha-src">Quoted on ${d}</div>${btn('View quote', 'quote', 'push')}</div>`))) +
+      `<div class="card promo hero" style="padding:36px"><img class="hero-img" src="hero.png" alt="" width="691" height="475"><h1 style="color:#fff">Get more value with Bupa health insurance</h1>${ph(2)}<div class="row">${btn('Get a quote', 'quote', 'w')}${btn('Compare cover', 'quote', 'w')}</div></div><div style="height:36px"></div>` +
+      sec('Saved quotes', grid('g3', [['Hospital cover', 'cross', 'Gold Hospital', '$189.50', '14 Oct 2026'], ['Extras cover', 'tooth', 'Top Extras', '$74.20', '9 Oct 2026'], ['Hospital and extras', 'heart', 'Gold Hospital + Top Extras', '$263.70', '2 Oct 2026']].map(([t, i, n, c, d]) => `<div class="card rel"><button class="share-btn" data-act="toast:Quote shared" aria-label="Share ${t} quote">${svg('share')}</button>${icon(i)}<h3>${t}</h3><div><b>${n}</b></div><div><span class="big-num" style="font-size:28px">${c}</span> <small>per month</small></div><div class="ha-src">Quoted on ${d}</div>${btn('View quote', 'quote', 'push')}${lnk('Compare quotes', 'quote')}</div>`))) +
       sec('Why join Bupa?', grid('g3', [tile('Members First providers', 'shield'), tile('Rewards and offers', 'star'), tile('Bupa clinics and online GPs', 'steth')]));
 
   pages.claims = () => head('Claims', btn('Make a claim', 'claim', 'p')) +
