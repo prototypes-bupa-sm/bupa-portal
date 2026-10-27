@@ -388,3 +388,5 @@ body.locked > *:not(#gate):not(script) { display: none !important; }
 .slider{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:900px){.slider{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.slider{grid-template-columns:1fr}}
+.prog-note{list-style:none;margin:0;padding:0}.prog-note li{display:flex;align-items:flex-start;gap:8px;font-size:14px;font-weight:600;color:var(--blue)}.prog-note .i{width:18px;height:18px;flex:none}
+.card.rel{position:relative}.pill.pu{background:#e9defa;color:#3b1f78}.pill.corner{position:absolute;top:16px;right:16px}
