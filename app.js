@@ -100,9 +100,10 @@
 
   const todoGone = new Set(['Submit your physio claim']);
   const todoItems = () => HA.filter(haShown).filter(r => r[2] === 0 && r[4] > 0 && !todoGone.has(r[0])).sort((x, y) => y[4] - x[4]);
-  function todoCard() {
+  function todoCard(skel) {
     const all = todoItems();
-    return `<div class="card todo-list" id="todoCard">${all.slice(0, 3).map(([n, src, p, t, st, cta, act]) => `<div class="todo-row"><span class="icon" aria-hidden="true">${svg(HA_TYPES.find(x => x[0] === t)[1])}</span><div class="todo-t"><div class="row"><b>${n}</b>${st === 2 ? pill('Due now', 'a', 'alert') : pill('Due soon', 'b', 'clock')}</div><div class="ha-src">${src}</div></div>${lnk(cta, act)}</div>`).join('')}</div>`;
+    const bar = w => `<div class="ph s" aria-hidden="true" style="width:${w}px;margin:0"></div>`;
+    return `<div class="card todo-list" id="todoCard">${all.slice(0, 3).map(([n, src, p, t, st, cta, act]) => `<div class="todo-row"><span class="icon" aria-hidden="true">${svg(HA_TYPES.find(x => x[0] === t)[1])}</span><div class="todo-t"><div class="row">${skel ? bar(200) : `<b>${n}</b>`}${st === 2 ? pill('Due now', 'a', 'alert') : pill('Due soon', 'b', 'clock')}</div><div class="ha-src">${skel ? bar(160) : src}</div></div>${skel ? bar(70) : lnk(cta, act)}</div>`).join('')}</div>`;
   }
 
 
@@ -128,9 +129,9 @@
     : sec('Offers for you', slider([offer('Get a $100 gift card when you refer a friend', 'gift'), offer('12 weeks free health insurance', 'shield'), offer('Free 6-monthly dental check-ups and cleans', 'tooth'), offer('10% off travel insurance', 'briefcase', 1), offer('25% off designer frames and sunglasses', 'eye', 1), offer('Free 6-monthly dental check-ups and cleans', 'tooth', 1)].map(o => o.replace('class="card"', 'class="card slide"'))));
 
   function homeSplit() {
-    if (!D()) return '';
     const n = todoItems().length;
     const left = n ? sec('Health actions', todoCard(), n > 3 ? lnk('View all', 'go:health-actions') : '') : '';
+    if (!D()) return n ? sec('Health actions', todoCard(true), lnk('View all', 'go:health-actions')) : '';
     const right = sec('Upcoming', `<div class="appt-cards">${apptCard('Scale and clean', 'Dentist')}${apptCard('General consultation', 'GP')}</div>`, `<a href="#/bookings">View all</a>`);
     return left ? `<div class="split home-split"><div>${right}</div><div>${left}</div></div>` : right;
   }
@@ -142,7 +143,7 @@
       ? `<div class="ctx ctx-m"><div class="ctx-policy"><b>Bronze Plus Simple Hospital $750 Excess</b>${E() ? '<b>Wellness Extras</b>' : ''}${pill('Savings this year $1,500', 'g', 'dollar')}</div><div class="row"><span>Membership No. 01234567</span><button class="link" data-act="toast:Membership number copied" aria-label="Copy membership number">${svg('clipboard')}</button></div></div>`
       : `<div class="row ctx">${pill('309 points', 'b', 'star')}${lnk('Earn and spend points', 'go:rewards')}</div>`;
     const shortcuts = M()
-      ? [shortcut('Make a booking', 'calendar', 'book'), shortcut('Check claim', 'dollar', 'go:claims'), shortcut('Get an estimate', 'calc', 'toast:Estimates are not in this prototype'), shortcut('Find clinics and providers', 'search', 'go:services')]
+      ? [shortcut('Make a booking', 'calendar', 'book'), shortcut('Check a claim', 'dollar', 'go:claims'), shortcut('Get an estimate', 'calc', 'toast:Estimates are not in this prototype'), shortcut('Find clinics and providers', 'search', 'go:services')]
       : [shortcut('Compare cover', 'shield', 'go:cover'), shortcut('Update payments', 'card', 'go:account/payment'), shortcut('Book a service', 'calendar', 'book'), shortcut('Find provider', 'search', 'go:services')];
     return `<div class="pagehead home-head"><div><h1>${greet}, John</h1>${ctx}</div></div>` +
       homeSplit() +
@@ -206,7 +207,7 @@
     sec('Upcoming appointments ' + (D() ? '<span class="pill b count">3</span>' : ''), !D() ? `<div class="card center" style="align-items:center">${svg('calendar')}<b>No upcoming appointments</b><div class="ph" style="width:40%"></div>${btn('Make a new booking', 'book')}</div>` : grid('g3', [
       `<div class="card"><div class="row between"><div class="row">${icon('tooth')}<h3>Scale and clean · Dentist</h3></div><button class="link" data-act="menu" aria-haspopup="menu" aria-expanded="false" aria-label="More options">${svg('more')}</button></div><hr class="rule">${line('calendar', 70)}${line('pin', 85)}${line('dollar', 50)}<div class="note alert-note"><div class="row">${svg('alert')}<b>Complete new patient form</b></div><div class="ph"></div>${btn('Complete form', 'form')}</div></div>`,
       `<div class="card"><div class="row between"><div class="row">${icon('steth')}<h3>General consultation · GP</h3></div><button class="link" data-act="menu" aria-haspopup="menu" aria-expanded="false" aria-label="More options">${svg('more')}</button></div><hr class="rule">${line('calendar', 70)}${line('pin', 85)}${line('dollar', 50)}</div>`,
-      `<div class="card"><div class="row between"><div class="row">${icon('phone')}<h3>Prescription renewal · Online doctor</h3></div><button class="link" data-act="menu" aria-haspopup="menu" aria-expanded="false" aria-label="More options">${svg('more')}</button></div><hr class="rule">${line('calendar', 70)}${line('video', 60)}${line('dollar', 50)}<div class="note">${ph(2)}</div></div>`
+      `<div class="card"><div class="row between"><div class="row">${icon('phone')}<h3>Prescription renewal · Online doctor</h3></div><button class="link" data-act="menu" aria-haspopup="menu" aria-expanded="false" aria-label="More options">${svg('more')}</button></div><hr class="rule">${line('calendar', 70)}${line('video', 60)}${line('dollar', 50)}<div class="note">Your join link will appear here 10 minutes before your meeting</div></div>`
     ]), `<a href="#/bookings">View all appointments</a>`) +
     sec(M() && D() ? 'Book again' : 'Clinics near you', grid('g3', [
       rebook('Dr. Sarah Chen · GP', '', 1.2).replace('@AV@', 'Available today'),
@@ -219,6 +220,7 @@
     `</div>`) + `</section>`;
 
   document.addEventListener('change', e => {
+    if (e.target.dataset && 'all' in e.target.dataset) { e.target.closest('.card').querySelectorAll('input[type=checkbox]').forEach(i => { i.checked = e.target.checked; }); return; }
     if (!/^pf-/.test(e.target.id)) return;
     const l = document.getElementById('pastList'); if (!l) return;
     const v = id => document.getElementById(id).value;
@@ -295,7 +297,7 @@
     ['Family and pregnancy', 4, 'users', 0, 0], ['Health coaching', 5, 'steth', 0, 0]
   ];
   const progState = { on: new Set(), loc: new Set(), open: null };
-  const progCard = ([t, c, ic, clinic, cov]) => `<div class="card">${icon(ic)}<h3>${t}</h3>${ph(2)}<div class="row">${pill(clinic ? 'In-clinic' : 'At-home', '', clinic ? 'pin' : 'home')}${pill('8 weeks')}${M() ? (cov ? pill('Covered by your policy', 'g', 'check') : pill('Not covered', 'a')) : ''}</div>${M() ? btn('Join program', 'join:' + t, 'push') : ''}</div>`;
+  const progCard = ([t, c, ic, clinic, cov]) => `<div class="card">${icon(ic)}<h3>${t}</h3>${ph(2)}${M() ? `<div class="row">${cov ? pill('Covered by your policy', 'g', 'check') : pill('Not covered', 'a')}</div>` : ''}${M() ? btn('Join program', 'join:' + t, 'push') : ''}</div>`;
   const progList = () => {
     const list = PROGS.filter(p => (!progState.on.size || progState.on.has(p[1])) && (!progState.loc.size || progState.loc.has(p[3]))).sort((x, y) => y[4] - x[4]);
     return list.length ? grid('g3', list.map(progCard)) : empty('search', 'No programs match your filters', 'Clear filters', 'prog-clear');
@@ -308,10 +310,9 @@
   };
   const progChips = () => `<div class="chips nowrap" role="group" aria-label="Filter programs">${dd('loc', 'home', 'Location', LOC, progState.loc, 'loc')}</div>`;
   pages.programs = () => `<div class="pagehead"><div class="row"><h1>Programs</h1>${M() ? '' : pill('For Bupa health insurance members only', 'b', 'shield')}</div></div>` +
-    `<div class="split"><div><section><div class="sechead"><h2>${M() ? 'Health programs for you' : 'Health programs'}</h2></div>${progChips()}<div id="progList" class="prog-list">${progList()}</div></section></div>` +
-    `<aside><h2>Your programs</h2>${M() ? `<div class="card"><div class="row between"><h3>Back pain program</h3>${pill('Week 2 of 8', 'b')}</div><div class="bar"><i style="width:25%"></i></div>${ph(2)}${btn('Continue', 'toast:Continue program', 'p')}</div>` : `<div class="card promo">${icon('shield')}<h3>Join Bupa</h3><p style="margin:0">Health programs are only available to Bupa health insurance members.</p>${btn('Compare cover', 'go:cover', 'w')}</div>`}</aside></div>` +
-    (M() ? '' : sec('More with cover', cta('Get more from programs with Bupa cover', 'Join Bupa', 'go:cover')));
-  const refreshProgs = () => { const l = $('#progList'); if (!l) return; keepFocus(() => { l.innerHTML = progList(); const c = l.parentElement.querySelector('.chips'); c.outerHTML = progChips(); }); const n = l.querySelectorAll('.card').length; announce('p' + n, plural(n, 'program')); };
+    `<div class="split"><div><section><div class="sechead"><h2>Health programs</h2></div><div id="progList" class="prog-list">${progList()}</div></section></div>` +
+    `<aside><h2>Your programs</h2>${M() ? `<div class="card"><div class="row between"><h3>Back pain program</h3>${pill('Week 2 of 8', 'b')}</div><div class="bar"><i style="width:25%"></i></div>${ph(2)}${btn('Continue', 'toast:Continue program', 'p')}</div>` : `<div class="card promo">${icon('shield')}<h3>Join Bupa</h3><p style="margin:0">Health programs are only available to Bupa health insurance members.</p>${btn('Compare cover', 'go:cover', 'w')}</div>`}</aside></div>`;
+  const refreshProgs = () => { const l = $('#progList'); if (!l) return; keepFocus(() => { l.innerHTML = progList(); }); const n = l.querySelectorAll('.card').length; announce('p' + n, plural(n, 'program')); };
 
   pages.rewards = () => head('Rewards') +
     grid('g2', [`<div class="card fill"><div class="row">${svg('star')}<b>Points balance</b></div><h2 style="margin:0">309 points</h2></div>`, `<div class="card fill"><div class="row">${svg('award')}<b>Tier level</b></div><h2 style="margin:0">Level 1</h2></div>`]) +
@@ -360,10 +361,10 @@
   const HA_TYPES = [['dental', 'tooth', 'Dental'], ['physio', 'activity', 'Physio'], ['gp', 'steth', 'GP'], ['check', 'heart', 'Health checks']];
   // [name, source, person, type, status (2 now, 1 soon, 0 none), cta label, cta action]
   const HA = [
-    ['Pay your monthly premium', 'From your Bupa policy', 0, 'check', 2, 'Pay now', 'toast:Payment page opened'],
     ['Book psychologist appointment', 'Referred by Dr Sarah Lee', 0, 'gp', 2, 'Book', 'book'],
     ['Book physio appointment', 'Recommended after your GP appointment on 18 Aug', 0, 'physio', 1, 'Book', 'book'],
     ['Renew prescription', 'From your GP, Dr Sarah Lee', 0, 'gp', 2, 'Renew', 'toast:Renewal request sent'],
+    ['Order medication', 'eScript from your GP, Dr Sarah Lee', 0, 'gp', 2, 'Order now', 'toast:Medication order started'],
     ['Book filling replacement', 'Recommended after your dental check-up', 0, 'dental', 1, 'Book', 'book'],
     ['Submit your physio claim', 'From your appointment on 12 Oct', 0, 'physio', 2, 'Claim now', 'go:claims'],
     ['Review your cover before renewal', 'From your Bupa policy', 0, 'check', 1, 'Review cover', 'go:cover'],
@@ -375,7 +376,7 @@
   ];
   const haState = { person: new Set(), type: new Set(), sort: 'due', open: null };
   const HA_HIDE_NEW = ['Submit your physio claim', 'Review your cover before renewal', 'Add bank details for claim payments'];
-  const HA_MEMBER = ['Pay your monthly premium'];
+  const HA_MEMBER = ['Order medication'];
   const HA_APPT = ['Book psychologist appointment', 'Book physio appointment'];
   const haShown = r => !(!M() && (HA_HIDE_NEW.includes(r[0]) || HA_MEMBER.includes(r[0]))) && !(!D() && HA_APPT.includes(r[0]));
   const haRows = () => HA.filter(r => haShown(r) && (!haState.person.size || haState.person.has(r[2])) && (!haState.type.size || haState.type.has(r[3])))
@@ -391,19 +392,33 @@
   const refreshHA = () => { const w = $('#haWrap'); if (!w) return; keepFocus(() => { w.innerHTML = haView(); }); const n = w.querySelectorAll('tbody tr').length; announce('a' + n, plural(n, 'action')); };
 
   const ACCT = [['contact', 'Personal details'], ['family', 'Family members'], ['payment', 'Payments'], ['settings', 'Settings']];
-  const toggles = list => list.map(t => `<label class="toggle"><span style="flex:1"><b>${t}</b><div class="ph s" style="margin-top:8px"></div></span><input type="checkbox" checked></label>`).join('');
+  const toggles = list => list.map(t => `<label class="toggle"><span style="flex:1"><b>${t}</b><div class="ph s" style="margin-top:8px"></div></span><input type="checkbox" role="switch" checked></label>`).join('');
   const acctBody = {
     inbox: () => `<h2>Inbox</h2><div class="card"><div class="list">${[0, 1, 2].map(() => `<div><span class="avatar">${svg('mail')}</span><span class="t"><div class="ph m"></div><div class="ph s" style="margin-top:8px"></div></span></div>`).join('')}</div></div>`,
-    settings: () => `<h2>Settings</h2><div class="card"><div class="topic-list">${[['Security and permissions', 'shield'], ['Data sharing and consent', 'users'], ['Marketing and communications', 'mail'], ['Notification preferences', 'bell']].map(([t, i]) => `<button class="topic" data-act="toast:Prototype only">${svg(i)}<span>${t}</span>${svg('chev', 'topic-chev')}</button>`).join('')}</div></div>`,
+    settings: () => `<h2>Settings</h2>` + [
+      ['Security and permissions', 'shield', `<div class="row between"><b>Password</b>${lnk('Change', 'toast:Prototype only')}</div>${ph(1)}<hr class="rule"><div class="row between"><b>Two-step verification</b>${pill('On', 'g')}</div>${ph(1)}`],
+      ['Data sharing and consent', 'users', `${ph(2)}<label class="toggle"><b>Enable all</b><input type="checkbox" role="switch" data-all></label>` + toggles(['Bupa Dental', 'Bupa Medical']) + `<div class="consent-sub">${['Profile data', 'Appointment data', 'Clinical data'].map(t => `<label class="toggle"><span class="row" style="gap:8px">${t}${svg('info')}</span><input type="checkbox" role="switch" checked></label>`).join('')}</div>` + toggles(['Bupa Optical']) + `<label class="toggle"><span style="flex:1"><b>Bupa Hearing</b><div class="ph s" style="margin-top:8px"></div></span><input type="checkbox" role="switch"></label>`],
+      ['Marketing and communications', 'mail', toggles(['Email offers and news', 'SMS offers and reminders'])],
+      ['Notification preferences', 'bell', toggles(M() ? ['Appointment reminders', 'Claim updates', 'Payment reminders'] : ['Appointment reminders', 'Payment reminders'])]
+    ].map(([t, ic, body]) => `<div class="card"><div class="row">${svg(ic)}<h3>${t}</h3></div>${body}</div>`).join('<div class="gap"></div>'),
     privacy: () => `<h2>Privacy</h2><div class="card">${toggles(['Share health records with my practitioners', 'Marketing communications', 'Personalised content'])}${btn('Save', 'toast:Privacy settings saved', 'p')}</div><div class="gap"></div><div class="card"><h3>Your data</h3>${ph(2)}<div class="row">${btn('Download my data', 'toast:Data export requested')}${btn('Delete my account', 'toast:Delete is not in this prototype')}</div></div>`,
-    payment: () => `<h2>Payment details</h2><div class="card"><div class="row between"><div class="row">${svg('card')}<h3>Payment card</h3></div>${M() ? pill('Premium payments', 'b') : pill('Used for services', 'b')}</div>${ph(1)}${btn('Update card', 'editpay')}</div><div class="gap"></div>` +
-      (M() ? `<div class="card"><div class="row between"><h3>Payment frequency</h3>${lnk('Change', 'toast:Change frequency')}</div>${ph(2)}</div><div class="gap"></div><div class="card"><h3>Bank account for claim payments</h3>${ph(2)}${btn('Update bank account', 'toast:Bank account updated')}</div>` : `<div class="card"><h3>Payment history</h3>${ph(3)}</div>`),
+    payment: () => {
+            const hist = `<div class="card"><div class="row between"><h3>Payment history</h3>${lnk('View all', 'toast:Prototype only')}</div><div class="list">${[0, 1, 2].map(() => `<div><span class="avatar">${svg('dollar')}</span><span class="t"><div class="ph m"></div><div class="ph s" style="margin-top:8px"></div></span></div>`).join('')}</div></div>`;
+      const wrap = main => `<div><div class="row between"><h2>Payment details</h2>${btn('Make a payment', 'paynow', 'p')}</div><div class="gap"></div>${main}</div>`;
+      const card = `<div class="card"><div class="row between"><div class="row">${svg('card')}<h3>Payment method</h3></div>${pill('Used for services', 'b')}</div><div class="row" style="gap:12px"><svg viewBox="0 0 48 16" width="44" height="16" role="img" aria-label="Visa"><text x="0" y="14" font-family="Montserrat,sans-serif" font-size="17" font-weight="800" font-style="italic" fill="#1434cb">VISA</text></svg><b>Visa</b><span>•••• 1234</span></div><div class="row" style="gap:8px"><small class="am-label" style="margin:0;padding:0">Expiry</small><span>08/28</span></div><div style="margin:8px 0 12px"><b>Billing address</b><div class="ph m" style="margin-top:12px"></div><div class="ph s" style="margin-top:12px"></div></div>${btn('Update payment method', 'editpay')}</div>`;
+      if (!M()) return wrap(`${card}<div class="gap"></div>${hist}`);
+      return wrap(`` +
+        `<div class="note" style="display:flex;gap:10px;align-items:flex-start"><span style="color:#1a7f4b">${svg('check')}</span><div style="flex:1"><b>You’re all paid up</b><div class="ph m" style="margin-top:8px"></div></div></div><div class="gap"></div>` +
+        `<div class="card"><h3>Monthly premium</h3><div class="ph l" style="margin:8px 0 16px;height:32px;width:140px"></div><div class="key-facts"><div><span>Paid until</span>${ph(1)}</div><div><span>Next direct debit</span>${ph(1)}</div></div><hr class="rule"><div class="row"><h3>Direct debit</h3>${pill('Active', 'g')}</div><div class="row between" style="margin-top:12px"><div class="row"><div class="ph s" style="width:44px;margin:0"></div><div class="ph s" style="width:140px;margin:0"></div></div>${lnk('Manage', 'editpay')}</div></div><div class="gap"></div>` +
+        `${hist}<div class="gap"></div>` +
+        `<div class="card"><div class="row between"><h3>Payment frequency</h3>${lnk('Change', 'toast:Change frequency')}</div>${ph(2)}</div><div class="gap"></div><div class="card"><h3>Bank account for claim payments</h3>${ph(2)}${btn('Update bank account', 'toast:Bank account updated')}</div>`);
+    },
     family: () => M()
       ? `<div class="row between"><h2>Family members</h2>${btn('Add a family member', 'addfamily', 'p')}</div><div class="fam-list">${[['Jay Jeevan', 'Husband, 41 years old'], ['Mia Jeevan', 'Daughter, 15 years old'], ['Sam Jeevan', 'Son, 11 years old']].map(([n, r]) => `<a class="card fam-card" href="#/account/family" data-act="toast:Edit member"><div class="row between"><span class="row">${svg('user')}<b>${n}</b></span>${svg('chev', 'topic-chev')}</div><p>${r}</p><ul class="fam-perms"><li>${svg('check')}You can make bookings for ${n.split(' ')[0]}</li><li>${svg('check')}You can view ${n.split(' ')[0]}’s health data</li></ul></a>`).join('')}</div>`
       : `<h2>Family members</h2><div class="card promo"><h3>Add family to a Bupa policy</h3>${ph(2)}${btn('Compare family cover', 'go:cover', 'w')}</div><div class="gap"></div><div class="card"><h3>Linked accounts</h3>${ph(2)}${btn('Link a family member', 'addfamily')}</div>`,
     contact: () => `<h2>Personal details</h2><div class="card"><div class="topic-list">${[['Member number', 'user'], ['Tax statement', 'dollar'], ['Tax file number', 'calc']].map(([t, i]) => `<div class="topic">${svg(i)}<span>${t}</span><div class="ph s" style="width:90px;margin:0"></div></div>`).join('')}</div></div><div class="gap"></div><div class="card"><h3>Contact details</h3><label class="field">Mobile<input></label><label class="field">Email<input></label><label class="field">Residential address<input></label><label class="field">Postal address<input></label>${btn('Save changes', 'toast:Contact details saved', 'p')}</div>`
   };
-  pages.account = (sub = 'contact') => head('Account') + `<div class="side"><nav aria-label="Account">${ACCT.map(([k, l]) => `<a href="${k[0] === '#' ? k : '#/account/' + k}" class="${k === sub ? 'on' : ''}">${l}</a>`).join('')}</nav><div>${(acctBody[sub] || acctBody.settings)()}</div></div>`;
+  pages.account = (sub = 'contact') => head('Account') + `<div class="side"><nav aria-label="Account">${ACCT.map(([k, l]) => `<a href="${k[0] === '#' ? k : '#/account/' + k}" class="${k === sub ? 'on' : ''}">${l}</a>`).join('')}</nav><div class="pay-split"><div>${(acctBody[sub] || acctBody.settings)()}</div></div></div>`;
   pages.help = () => head('Help and support') +
     `<section><div class="card tint"><h2 class="row" style="margin:0 0 12px">${svg('ai-chat')}Got a question?</h2><div class="chips">${['Am I covered for a hospital procedure?', 'Check my waiting periods', 'How much will I pay?', 'Something else'].map(t => `<button class="chip" data-act="chat">${t}</button>`).join('')}</div></div></section>` +
     sec('Choose a topic to get started', `<div class="card"><div class="topic-list">${[['Profile and settings', 'user', 'go:account/settings'], ['Payments', 'dollar', 'toast:Prototype only'], ['Card', 'card', 'toast:Prototype only'], ['Claims', 'file', 'go:claims'], ['Going to hospital', 'cross', 'toast:Prototype only'], ['Tax', 'calc', 'toast:Prototype only'], ['Forms', 'clipboard', 'toast:Prototype only']].map(([t, i, a]) => `<button class="topic" data-act="${a}">${svg(i)}<span>${t}</span>${svg('chev', 'topic-chev')}</button>`).join('')}</div></div>`) ;
@@ -507,6 +522,7 @@
       case 'quote': simpleForm('Get a quote', ['Who is the cover for?', 'Postcode', 'Date of birth', 'Email'], 'Quote request sent'); break;
       case 'addfamily': simpleForm(M() ? 'Add a family member' : 'Link a family member', ['First name', 'Last name', 'Date of birth', 'Relationship'], 'Family member added'); break;
       case 'edithealth': simpleForm('Edit health details', ['Sex assigned at birth', 'Date of birth', 'Height (cm)', 'Weight (kg)', 'Blood type'], 'Health details saved'); break;
+      case 'paynow': simpleForm('Make a payment', ['Amount', 'Payment card'], 'Payment made'); break;
       case 'editpay': simpleForm('Update card', ['Name on card', 'Card number', 'Expiry', 'CVV'], 'Payment details updated'); break;
       case 'ctab': { const y = window.scrollY; coverTab = arg; render(); window.scrollTo(0, y); $('[data-act="ctab:' + arg + '"]')?.focus(); break; }
       case 'join': dlg(`<h2>Join “${arg}”</h2>${ph(3)}<div class="row end">${btn('Cancel', 'close')}${btn('Join program', 'save:You’ve joined the program', 'p')}</div>`); break;
@@ -652,7 +668,7 @@
   ];
   let notifsDismissed = false;
   function renderNotifs() {
-    const list = notifsDismissed || !D() ? [] : (M() ? NOTIFS : NOTIFS_NM);
+    const list = notifsDismissed ? [] : todoItems().map(([n, src, p, t, st, cta, act]) => ({ ic: HA_TYPES.find(x => x[0] === t)[1], t: n, sub: src, d: st === 2 ? 'Due now' : 'Due soon', btn: cta, act }));
     $('#notifBtn').classList.toggle('has-new', list.length > 0);
     $('#notifBtn').setAttribute('aria-label', list.length ? `Notifications, ${list.length} new` : 'Notifications');
     $('#notifMenu').innerHTML = `<div class="notif-top">${btn('Dismiss all', 'dismissnotifs', 'sm')}</div>` +
