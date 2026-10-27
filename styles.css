@@ -366,3 +366,13 @@ section:has(#pastList)>h2{margin-bottom:24px}
 .fam-perms li{display:flex;align-items:center;gap:8px}
 .fam-perms .i{width:16px;height:16px;color:var(--green,#1a7f4b)}
 .fam-card .topic-chev{transform:rotate(-90deg);color:var(--mute)}
+
+.pay-split{display:grid;grid-template-columns:2fr 1fr;gap:32px;align-items:start}.pay-split aside h3{margin:0 0 12px}
+@media(max-width:900px){.pay-split{grid-template-columns:1fr}}
+
+.toggle input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:none;width:44px;height:26px;border-radius:13px;background:#b8c0cf;position:relative;cursor:pointer;transition:background-color .18s ease;margin:0}
+.toggle input[type=checkbox]::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px #0003;transition:transform .18s ease}
+.toggle input[type=checkbox]:checked{background:var(--blue)}
+.toggle input[type=checkbox]:checked::after{transform:translateX(18px)}
+.toggle input[type=checkbox]:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+.consent-sub{padding-left:24px}.consent-sub .toggle{color:var(--mute)}
