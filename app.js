@@ -94,7 +94,7 @@
   const offer = (t, ic, locked) => `<div class="card">${icon(ic)}<h3>${t}</h3>${ph(2)}${locked ? pill('Members only', 'b', 'shield') : btn('Claim offer', 'toast:Offer claimed', 'push')}</div>`;
   const activity = (ic, t, d, label, act) => `<div><span class="icon" aria-hidden="true">${svg(ic)}</span><span class="t"><b>${t}</b><div class="ph s" style="margin-top:8px"></div></span><span class="d" style="text-align:right">${d}</span><span class="a" style="text-align:right">${lnk(label, act)}</span></div>`;
 
-  const slider = items => `<div class="slider">${items.join('')}</div>`;
+  const slider = items => `<div class="slider pager">${items.join('')}</div>`;
   const shortcut = (t, ic, act) => `<button class="shortcut" data-act="${act}"><span class="sc-ic" aria-hidden="true">${svg(ic)}</span><span>${t}</span></button>`;
   const supportRow = (t, sub, ic, act) => `<button class="support-row" data-act="${act}">${icon(ic)}<span><b>${t}</b><small>${sub}</small></span>${svg('chev')}</button>`;
   const slide = (inner, cls = '') => `<div class="card slide ${cls}">${inner}</div>`;
@@ -211,7 +211,7 @@
       `<div class="card"><div class="row between"><div class="row">${icon('steth')}<h3>General consultation · GP</h3></div><button class="link" data-act="menu" aria-haspopup="menu" aria-expanded="false" aria-label="More options">${svg('more')}</button></div><hr class="rule">${line('calendar', 70)}${line('pin', 85)}${line('dollar', 50)}</div>`,
       `<div class="card"><div class="row between"><div class="row">${icon('phone')}<h3>Prescription renewal · Online doctor</h3></div><button class="link" data-act="menu" aria-haspopup="menu" aria-expanded="false" aria-label="More options">${svg('more')}</button></div><hr class="rule">${line('calendar', 70)}${line('video', 60)}${line('dollar', 50)}<div class="note">Your join link will appear here 10 minutes before your meeting</div></div>`
     ]), `<a href="#/bookings">View all appointments</a>`) +
-    sec(M() && D() ? 'Book again' : 'Clinics near you', grid('g3', [
+    sec(M() && D() ? 'Book again' : 'Clinics near you', grid('g3 pager', [
       rebook('Dr. Sarah Chen · GP', '', 1.2).replace('@AV@', 'Available today'),
       rebook('Dr. Mark Torres · Dentist', E() ? 'Members First Ultimate' : '', 2.8).replace('@AV@', 'Available tomorrow'),
       rebook('Dr. Ella Jones · Optician', E() ? 'Members First' : '', 4.5).replace('@AV@', 'Available Monday')
@@ -238,10 +238,10 @@
     const tabs = E() ? `<div class="tabs" role="group" aria-label="Cover type">${[['hospital', 'Hospital'], ['extras', 'Extras']].map(([k, l]) => `<button aria-pressed="${tab === k}" class="${tab === k ? 'on' : ''}" data-act="ctab:${k}">${l}</button>`).join('')}</div>` : '';
     const inc = tab === 'hospital' ? [tile('Inclusions', 'cross'), tile('Excess and waiting periods', 'clock')] : [tile('Dental', 'tooth'), tile('Optical', 'eye'), tile('Physio and allied health', 'activity'), tile('Mental health', 'mind')];
     return head('Cover') +
-      sec('Shortcuts', `<div class="shortcuts" style="margin-bottom:0">${sc.map(([t, i, a]) => shortcut(t, i, a)).join('')}</div>`) +
+      `<div class="sc-sec">` + sec('Shortcuts', `<div class="shortcuts" style="margin-bottom:0">${sc.map(([t, i, a]) => shortcut(t, i, a)).join('')}</div>`) + `</div>` +
       `<section><div class="card tint"><h2>Membership details</h2><div class="row between"><h3>Bronze Plus Simple Hospital $750 Excess</h3>${pill('Active', 'g')}</div><div class="key-facts"><div><span>Your premium</span>${ph(1)}</div><div><span>Next payment</span>${ph(1)}</div></div><div class="kv">${[['Membership number', '81 968 752'], ['Card number', '9036 0007 5016 9149 387'], ['Membership type', 'Family'], ['Member since', '10 September 2015'], ['Cover last updated', '1 October 2023'], ['Cover until', '22 November 2026'], ['Lifetime health cover loading', '0%'], ['Age based discount', '7%'], ['Last payment received (via Direct Debit)', '16 October 2025']].map(([k]) => `<div><b>${k}</b>${ph(1)}</div>`).join('')}</div><div class="row">${btn('Download policy documents', 'toast:Documents downloaded')}</div></div></section>` +
       `<section><h2>Cover details</h2>${tabs}<div class="card" id="coverDetails"><h3>${tab === 'hospital' ? 'Bronze Plus Advantage Hospital' : 'Wellness Extras'}</h3><div><b>Policy document:</b> ${lnk(tab === 'hospital' ? 'Hospital cover summary (PDF)' : 'Extras cover summary (PDF)', 'toast:Document downloaded')}</div><table class="ha-table inc-table"><thead><tr><th scope="col">Inclusion</th><th scope="col">Cover</th></tr></thead><tbody>${Array.from({ length: tab === 'hospital' ? 8 : 6 }, () => `<tr><td><div class="row" style="flex-wrap:nowrap">${svg('check')}<div class="ph" aria-hidden="true" style="flex:1;margin:0"></div></div></td><td><div class="ph s" aria-hidden="true" style="margin:0"></div></td></tr>`).join('')}</tbody></table>${lnk('View exclusions', 'toast:Exclusions are not in this prototype')}</div></section>` +
-      sec('Who’s covered and how the cover is managed', `<p style="margin:0 0 16px">Notice something wrong? ${lnk('Contact us to make a correction', 'go:help')}.</p>` + grid('g4', [['JS', '00', 'John Smith', 'Contributor', 'Yes', 'No'], ['KS', '01', 'Kelly Smith', 'Wife', 'Yes', 'Yes'], ['LS', '02', 'Leonard Smith', 'Son', 'Yes', 'No'], ['MS', '03', 'Madeline Smith', 'Daughter', 'Yes', 'No']].map(([i, n, nm, rel, oa, cc], k) => `<div class="card"><div class="row"><span class="avatar">${i}</span><div><b>${n} ${nm}</b><div>${rel}</div></div></div><div><b>Online authority</b><div>${oa}${k ? ' ' + lnk('Change', 'toast:Online authority is not in this prototype') : ''}</div></div><div><b>Claims consent</b><div>${cc}${k ? ' ' + lnk('Change', 'toast:Claims consent is not in this prototype') : ''}</div></div></div>`)));
+      sec('Who’s covered and how the cover is managed', `<p style="margin:0 0 16px">Notice something wrong? ${lnk('Contact us to make a correction', 'go:help')}.</p>` + grid('g4 pager', [['JS', '00', 'John Smith', 'Contributor', 'Yes', 'No'], ['KS', '01', 'Kelly Smith', 'Wife', 'Yes', 'Yes'], ['LS', '02', 'Leonard Smith', 'Son', 'Yes', 'No'], ['MS', '03', 'Madeline Smith', 'Daughter', 'Yes', 'No']].map(([i, n, nm, rel, oa, cc], k) => `<div class="card"><div class="row"><span class="avatar">${i}</span><div><b>${n} ${nm}</b><div>${rel}</div></div></div><div><b>Online authority</b><div>${oa}${k ? ' ' + lnk('Change', 'toast:Online authority is not in this prototype') : ''}</div></div><div><b>Claims consent</b><div>${cc}${k ? ' ' + lnk('Change', 'toast:Claims consent is not in this prototype') : ''}</div></div></div>`)));
   };
   pages.cover = () => M()
     ? coverMember()
@@ -254,7 +254,7 @@
     sec('Claims in progress', D() ? `<div class="card tint claim-card"><div class="row between"><h3>Claim #00123</h3>${pill('In review', 'a')}</div>${ph(2)}${lnk('View claim', 'toast:Claim details')}</div>` : empty('dollar', 'No claims in progress', 'Make a claim', 'claim')) +
     sec('Claims history', !D() ? empty('clock', 'No claims to show', 'Make a claim', 'claim') : `<div class="row" style="margin-bottom:10px"><label class="field" style="flex:1;min-width:220px">Search claims<input placeholder="Provider or service"></label><label class="field">See claims for<select><option>Everyone</option><option>John Smith</option><option>Son</option><option>Daughter</option></select></label><label class="field">Period<select><option>Last 12 months</option></select></label></div><div class="list">${['Dental', 'Optical', 'Physio', 'Hospital'].map(r => `<div><span class="d"><div class="ph"></div></span><span class="t"><b>${r} claim</b><div class="ph s" style="margin-top:8px"></div></span><span class="tags">${pill('Paid', 'g', 'check')}</span><span class="a">${lnk('View details', 'toast:Claim details')}</span></div>`).join('')}</div>`);
 
-  pages.extras = () => head('Extras usage') + `<div class="split"><div>` +
+  pages.extras = () => head('Extras usage', `<span class="m-only">${pill('Your savings this year $1,500', 'g', 'dollar')}</span>`) + `<div class="split"><div>` +
     sec('Annual limits', grid('g2', [
       `<div class="card">${icon('tooth')}<h3>Dental</h3>${bar('General dental', '$520 left', 55)}${bar('Major dental', '$380 left', 70)}${btn('Book a dentist', 'book')}</div>`,
       `<div class="card">${icon('eye')}<h3>Optical</h3>${bar('Optical', '$200 left', 45)}${btn('Book an eye test', 'book')}</div>`,
@@ -263,14 +263,14 @@
     ])) +
     sec('Limits reset', `<div class="card tint">${ph(2)}</div>`) +
     sec('Recent usage', D() ? `<div class="card"><div class="list">${[1, 2, 3].map(() => `<div><span class="d"><div class="ph"></div></span><span class="t">${ph(2)}</span><span class="a">${ph(1)}</span></div>`).join('')}</div></div>` : empty('clock', 'No recent usage', 'Book a service', 'go:services')) +
-    `</div><aside><div class="card tint"><h2>Your savings this year</h2><div class="big-num">$1,500</div>${ph(2)}</div></aside></div>`;
+    `</div><aside class="m-hide"><div class="card tint"><h2>Your savings this year</h2><div class="big-num">$1,500</div>${ph(2)}</div></aside></div>`;
 
   function svc(title, ic, pills, bars, label, cov = M(), tags = []) {
     return `<div class="card"><div class="row">${pills.map((p, i) => pill(p, i === 0 && cov ? 'g' : 'b', i === 0 && cov ? 'check' : '')).join('')}</div><div class="row">${icon(ic)}<h3>${title}</h3></div>${bars.map(([l, left]) => `<b>${bars.length > 1 ? l + ': ' : ''}${left.replace(' left', '')} remaining</b>`).join('')}${ph(2)}${tags.length ? `<div class="row">${tags.map(t => pill(t, 'b')).join('')}</div>` : ''}<div class="push">${lnk('Learn more', 'toast:Learn more')}</div></div>`;
   }
 
   pages.services = () => head('Services') +
-    `<div class="split"><div>` +
+    `<div class="split svc-split"><div>` +
     sec(M() ? 'Get more value with our clinics' : 'Our clinics', grid('g2', [
       svc('Dental', 'tooth', E() ? ['Covered', '2 of 2 check-up and cleans left'] : ['Available to everyone'], E() ? [['General dental', '$520 left', 55], ['Major dental', '$380 left', 70]] : [], 'Book a dentist', E(), ['Check-ups and cleans', 'Fillings', 'Teeth whitening']),
       svc('Optical', 'eye', E() ? ['Covered'] : ['Available to everyone'], E() ? [['Optical', '$200 left', 45]] : [], 'Book an eye test', E(), ['Eye tests', 'Glasses', 'Contact lenses']),
@@ -286,8 +286,8 @@
       ? `<h2>Make the most of your cover</h2><div class="card tint"><div class="row">${svg('shield')}<h3>Get more back at a Members First provider</h3></div>${ph(1)}${line('check')}${line('check')}<label class="field">Speciality, practice or practitioner<input placeholder="Dental, Bupa Dental or…"></label><label class="field">Location<input placeholder="Suburb or Postcode"></label>${btn('Search', 'toast:Search opens Members First finder', 'p')}</div>` + ''
       : `<h2>Save with cover</h2>${cta('Unlock more value with Bupa health insurance', 'Compare cover', 'go:cover')}`) +
     `</aside></div>` +
-    sec('Tests and screenings', grid('g4', [['Genomics', 'dna'], ['Nurse-led health checks', 'steth'], ['Hearing test', 'ear'], ['Adult carrier screening test', 'dna']].map(([t, i]) => `<div class="card tiles">${icon(i)}<h3>${t}</h3>${ph(2)}${pill('Bupa members only', 'b push', 'lock')}</div>`))) +
-    sec('Ongoing care', grid('g3', [['Hospital at home', 'briefcase'], ['Oncology and cancer', 'ribbon'], ['Aged care', 'users']].map(([t, i]) => tile(t, i)))) +
+    sec('Tests and screenings', grid('g4 m2', [['Genomics', 'dna'], ['Nurse-led health checks', 'steth'], ['Hearing test', 'ear'], ['Adult carrier screening test', 'dna']].map(([t, i]) => `<div class="card tiles">${icon(i)}<h3>${t}</h3>${ph(2)}${pill('Bupa members only', 'b push', 'lock')}</div>`))) +
+    sec('Ongoing care', grid('g3 m2', [['Hospital at home', 'briefcase'], ['Oncology and cancer', 'ribbon'], ['Aged care', 'users']].map(([t, i]) => tile(t, i)))) +
     sec('Tools and checks', `<div class="link-list">${[['BMI calculator', 'calc'], ['Vision screening', 'eye'], ['Target heart rate', 'activity'], ['Calories burned', 'flame'], ['Ideal weight', 'scale']].map(([t, i]) => `<button class="chip" data-act="toast:${t}">${svg(i)}${t}</button>`).join('')}</div>`);
 
   const COND = ['Heart health', 'Muscles, bones and joints', 'Mental health', 'Hospital care at home', 'Family and pregnancy', 'Health coaching'];
@@ -311,18 +311,20 @@
       (open ? `<div class="card-menu dd-menu" id="dd-${key}" role="group" aria-label="${label}">${opts.map(([v, oi, t]) => `<button aria-pressed="${set.has(v)}" data-act="${act}:${v}">${svg(oi)}<span>${t}</span>${set.has(v) ? svg('check', 'dd-check') : ''}</button>`).join('')}</div>` : '') + `</div>`;
   };
   const progChips = () => `<div class="chips nowrap" role="group" aria-label="Filter programs">${dd('loc', 'home', 'Location', LOC, progState.loc, 'loc')}</div>`;
+  let progTab = 'active';
   pages.programs = () => `<div class="pagehead"><div class="row"><h1>Programs</h1></div></div>` +
-    `<div class="split"><div><section><div class="sechead"><h2>Health programs</h2></div><div id="progList" class="prog-list">${progList()}</div></section></div>` +
-    `<aside><h2>Your programs</h2><div class="card"><div class="row between"><h3>Back pain program</h3>${pill('Week 2 of 8', 'b')}</div><div class="bar"><i style="width:25%"></i></div>${ph(2)}${btn('Continue', 'toast:Continue program', 'p')}</div>${M() ? '' : `<div class="gap"></div><div class="card promo">${icon('shield')}<h3>Join Bupa</h3><p style="margin:0">Health programs are only available to Bupa health insurance members.</p>${btn('Compare cover', 'go:cover', 'w')}</div>`}</aside></div>`;
+    `<div class="m-only ios-tabs" role="tablist" aria-label="Programs">${[['active', 'Active'], ['all', 'All']].map(([k, l]) => `<button role="tab" aria-selected="${progTab === k}" class="${progTab === k ? 'on' : ''}" data-act="ptab:${k}">${l}${k === 'active' ? '<i class="tdot" aria-hidden="true"></i>' : ''}</button>`).join('')}</div>` +
+    `<div class="progs" data-tab="${progTab}"><div class="split"><div><section><div class="sechead"><h2>Health programs</h2></div><div id="progList" class="prog-list">${progList()}</div></section></div>` +
+    `<aside><h2>Your programs</h2><div class="card"><div class="row between"><h3>Back pain program</h3>${pill('Week 2 of 8', 'b')}</div><div class="bar"><i style="width:25%"></i></div>${ph(2)}${btn('Continue', 'toast:Continue program', 'p')}</div>${M() ? '' : `<div class="gap"></div><div class="card promo">${icon('shield')}<h3>Join Bupa</h3><p style="margin:0">Health programs are only available to Bupa health insurance members.</p>${btn('Compare cover', 'go:cover', 'w')}</div>`}</aside></div></div>`;
   const refreshProgs = () => { const l = $('#progList'); if (!l) return; keepFocus(() => { l.innerHTML = progList(); }); const n = l.querySelectorAll('.card').length; announce('p' + n, plural(n, 'program')); };
 
   pages.rewards = () => head('Rewards') +
-    grid('g2', [`<div class="card fill"><div class="row">${svg('star')}<b>Points balance</b></div><h2 style="margin:0">309 points</h2></div>`, `<div class="card fill"><div class="row">${svg('award')}<b>Tier level</b></div><h2 style="margin:0">Level 1</h2></div>`]) +
+    grid('g2 m2', [`<div class="card fill"><div class="row">${svg('star')}<b>Points balance</b></div><h2 style="margin:0">309 points</h2></div>`, `<div class="card fill"><div class="row">${svg('award')}<b>Tier level</b></div><h2 style="margin:0">Level 1</h2></div>`]) +
     `<div style="height:32px"></div>` +
-    sec('Earn points', grid('g4', [['Complete your health profile', 50], ['Complete a health check', 100], ['Refer a friend', 500], ['Book a dental check up', 75]].map(([t, n]) => `<div class="card">${icon('clipboard')}<b>${t}</b>${ph(2)}<b class="pts">${n} points</b><div class=\"push\">${lnk('Get started', 'toast:Prototype only')}</div></div>`))) +
-    sec('Featured challenges', grid('g4', ['Healthy Cities walking challenge', 'Festive Fitness', 'Spring into action', 'Power Hour'].map(t => `<div class="card rel">${icon('trophy')}<b>${t}</b>${ph(2)}<span class="pill pu corner">${svg('phone')}Join in the app</span><div class=\"push\">${lnk('Join challenge', 'toast:Prototype only')}</div></div>`))) +
-    sec('Spend points', grid('g4', ['Gift cards', 'Vouchers', 'Health insurance discounts', 'Health service discounts'].map(t => `<div class="card">${icon('gift')}<b>${t}</b>${ph(2)}<div class=\"push\">${lnk('Redeem', 'toast:Prototype only')}</div></div>`))) +
-    sec('How points work', grid('g2', [`<div class="card tint"><div class="row">${svg('star')}<b>Earning points</b></div>${ph(2)}</div>`, `<div class="card tint"><div class="row">${svg('award')}<b>Using points</b></div>${ph(2)}</div>`])) +
+    sec('Earn points', grid('g4 m2', [['Complete your health profile', 50], ['Complete a health check', 100], ['Refer a friend', 500], ['Book a dental check up', 75]].map(([t, n]) => `<div class="card">${icon('clipboard')}<b>${t}</b>${ph(2)}<b class="pts">${n} points</b><div class=\"push\">${lnk('Get started', 'toast:Prototype only')}</div></div>`))) +
+    sec('Featured challenges', grid('g4 m2', ['Healthy Cities walking challenge', 'Festive Fitness', 'Spring into action', 'Power Hour'].map(t => `<div class="card rel">${icon('trophy')}<b>${t}</b>${ph(2)}<span class="pill pu corner">${svg('phone')}Join in the app</span><div class=\"push\">${lnk('Join challenge', 'toast:Prototype only')}</div></div>`))) +
+    sec('Spend points', grid('g4 m2', ['Gift cards', 'Vouchers', 'Health insurance discounts', 'Health service discounts'].map(t => `<div class="card">${icon('gift')}<b>${t}</b>${ph(2)}<div class=\"push\">${lnk('Redeem', 'toast:Prototype only')}</div></div>`))) +
+    sec('How points work', grid('g2 m2', [`<div class="card tint"><div class="row">${svg('star')}<b>Earning points</b></div>${ph(2)}</div>`, `<div class="card tint"><div class="row">${svg('award')}<b>Using points</b></div>${ph(2)}</div>`])) +
     sec('Previous activity', `<div class="card center" style="align-items:center">${svg('clock')}<b>No activity to show</b><div class="ph" style="width:40%"></div></div>`);
 
   const HR_TYPES = [['plan', 'clipboard', 'Treatment plan'], ['referral', 'file', 'Referral'], ['genomics', 'dna', 'Genomics result']];
@@ -356,7 +358,7 @@
     sec('Health records', D() ? `<div id="hrWrap">${hrView()}</div>` : empty('file', 'No health records to display', 'Book an appointment', 'book')) +
     sec('Non-clinical records', `<div class="card fill"><div class="row">${svg('file')}<b>No non-clinical records to display</b></div>${ph(1)}</div>`) +
     `</div></div>` +
-    sec('Assess your risk', `<div class="ph" style="width:45%;margin-bottom:16px"></div>` + grid('g3', [['Type 2 diabetes', 'droplet', 'Start assessment'], ['Musculoskeletal', 'activity', 'Start assessment'], ['Genomics test', 'dna', 'Explore test']].map(([t, i, a]) => `<div class="card">${icon(i)}<h3>${t}</h3>${ph(2)}${lnk(a, 'toast:' + t)}</div>`)));
+    sec('Assess your risk', `<div class="ph" style="width:45%;margin-bottom:16px"></div>` + grid('g3 m2', [['Type 2 diabetes', 'droplet', 'Start assessment'], ['Musculoskeletal', 'activity', 'Start assessment'], ['Genomics test', 'dna', 'Explore test']].map(([t, i, a]) => `<div class="card">${icon(i)}<h3>${t}</h3>${ph(2)}${lnk(a, 'toast:' + t)}</div>`)));
 
   const HA_PEOPLE = ['John Smith', 'Emma Smith', 'Liam Smith'];
   const HA_TYPES = [['dental', 'tooth', 'Dental'], ['physio', 'activity', 'Physio'], ['gp', 'steth', 'GP'], ['check', 'heart', 'Health checks']];
@@ -419,7 +421,7 @@
       : `<h2>Family members</h2><div class="card promo"><h3>Add family to a Bupa policy</h3>${ph(2)}${btn('Compare family cover', 'go:cover', 'w')}</div><div class="gap"></div><div class="card"><h3>Linked accounts</h3>${ph(2)}${btn('Link a family member', 'addfamily')}</div>`,
     contact: () => `<h2>Personal details</h2><div class="card"><div class="topic-list">${[['Member number', 'user'], ['Tax statement', 'dollar'], ['Tax file number', 'calc']].map(([t, i]) => `<div class="topic">${svg(i)}<span>${t}</span><div class="ph s" style="width:90px;margin:0"></div></div>`).join('')}</div></div><div class="gap"></div><div class="card"><h3>Contact details</h3><label class="field">Mobile<input></label><label class="field">Email<input></label><label class="field">Residential address<input></label><label class="field">Postal address<input></label>${btn('Save changes', 'toast:Contact details saved', 'p')}</div>`
   };
-  pages.account = (sub = 'contact') => head('Account') + `<div class="side"><nav aria-label="Account">${ACCT.map(([k, l]) => `<a href="${k[0] === '#' ? k : '#/account/' + k}" class="${k === sub ? 'on' : ''}">${l}</a>`).join('')}</nav><div class="pay-split"><div>${(acctBody[sub] || acctBody.settings)()}</div></div></div>`;
+  pages.account = (sub = 'contact') => head('Account') + `<div class="side"><nav class="tabs-nav" aria-label="Account">${ACCT.map(([k, l]) => `<a href="${k[0] === '#' ? k : '#/account/' + k}" class="${k === sub ? 'on' : ''}">${l}</a>`).join('')}</nav><div class="pay-split"><div>${(acctBody[sub] || acctBody.settings)()}</div></div></div>`;
   pages.help = () => head('Help and support') +
     `<section><div class="card tint"><h2 class="row" style="margin:0 0 12px">${svg('ai-chat')}Got a question?</h2><div class="chips">${['Am I covered for a hospital procedure?', 'Check my waiting periods', 'How much will I pay?', 'Something else'].map(t => `<button class="chip" data-act="chat">${t}</button>`).join('')}</div></div></section>` +
     sec('Choose a topic to get started', `<div class="card"><div class="topic-list">${[['Profile and settings', 'user', 'go:account/settings'], ['Payments', 'dollar', 'toast:Prototype only'], ['Card', 'card', 'toast:Prototype only'], ['Claims', 'file', 'go:claims'], ['Going to hospital', 'cross', 'toast:Prototype only'], ['Tax', 'calc', 'toast:Prototype only'], ['Forms', 'clipboard', 'toast:Prototype only']].map(([t, i, a]) => `<button class="topic" data-act="${a}">${svg(i)}<span>${t}</span>${svg('chev', 'topic-chev')}</button>`).join('')}</div></div>`) ;
@@ -525,6 +527,7 @@
       case 'edithealth': simpleForm('Edit health details', ['Sex assigned at birth', 'Date of birth', 'Height (cm)', 'Weight (kg)', 'Blood type'], 'Health details saved'); break;
       case 'paynow': simpleForm('Make a payment', ['Amount', 'Payment card'], 'Payment made'); break;
       case 'editpay': simpleForm('Update card', ['Name on card', 'Card number', 'Expiry', 'CVV'], 'Payment details updated'); break;
+      case 'ptab': progTab = arg; render(); $('[data-act="ptab:' + arg + '"]')?.focus(); break;
       case 'ctab': { const y = window.scrollY; coverTab = arg; render(); window.scrollTo(0, y); $('[data-act="ctab:' + arg + '"]')?.focus(); break; }
       case 'join': dlg(`<h2>Join “${arg}”</h2>${ph(3)}<div class="row end">${btn('Cancel', 'close')}${btn('Join program', 'save:You’ve joined the program', 'p')}</div>`); break;
     }
@@ -708,8 +711,42 @@
     $('#nav').classList.remove('open'); menuOpen(false);
     $('#main').innerHTML = route === 'account' ? pages.account(sub) : route === 'document' ? pages.document(sub) : route === 'appointment' ? pages.appointment(sub) : (pages[route] || pages.home)();
     window.scrollTo(0, 0);
+    initPagers();
     main.classList.toggle('enter', routeChanged); routeChanged = false;
   }
+  const pagerUpdate = (p, d) => {
+    const pl = p.getBoundingClientRect().left, kids = [...p.children];
+    let k = kids.reduce((b, c, i) => Math.abs(c.getBoundingClientRect().left - pl) < Math.abs(kids[b].getBoundingClientRect().left - pl) ? i : b, 0);
+    if (p.scrollLeft + p.clientWidth >= p.scrollWidth - 2) k = kids.length - 1;
+    [...d.children].forEach((b, i) => b.classList.toggle('on', i === k));
+  };
+  const initPagers = () => document.querySelectorAll('#main .pager').forEach(p => {
+    const n = p.children.length; if (n < 2) return;
+    const d = document.createElement('div'); d.className = 'dots';
+    d.innerHTML = Array.from({ length: n }, (_, i) => `<button type="button" data-i="${i}" aria-label="Go to item ${i + 1} of ${n}"></button>`).join('');
+    p.after(d); pagerUpdate(p, d);
+    p.addEventListener('scroll', () => pagerUpdate(p, d), { passive: true });
+    let sx = 0, sl = 0, down = false, moved = false;
+    const narrow = () => matchMedia('(max-width:560px)').matches;
+    p.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse' || e.button || !narrow()) return; down = true; moved = false; sx = e.clientX; sl = p.scrollLeft; });
+    window.addEventListener('pointermove', e => {
+      if (!down) return;
+      const dx = e.clientX - sx;
+      if (!moved && Math.abs(dx) < 5) return;
+      moved = true; p.classList.add('dragging'); p.scrollLeft = sl - dx;
+    });
+    window.addEventListener('pointerup', () => {
+      if (!down) return; down = false;
+      if (!moved) return;
+      const pl = p.getBoundingClientRect().left;
+      const t = [...p.children].reduce((b, c) => Math.abs(c.getBoundingClientRect().left - pl) < Math.abs(b.getBoundingClientRect().left - pl) ? c : b);
+      p.classList.remove('dragging');
+      p.scrollTo({ left: t.getBoundingClientRect().left - pl + p.scrollLeft, behavior: 'smooth' });
+    });
+    p.addEventListener('click', e => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+    p.addEventListener('dragstart', e => e.preventDefault());
+    d.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const c = p.children[+b.dataset.i]; p.scrollTo({ left: c.getBoundingClientRect().left - p.getBoundingClientRect().left + p.scrollLeft, behavior: 'smooth' }); });
+  });
   let routeChanged = false;
   const main = $('#main');
   window.addEventListener('hashchange', () => { routeChanged = true; render(); });
